@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Marionette</title>
+    <link rel="icon" href="img/favicon.png" type="" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+    <style>
+      a[data-icon] {
+        position: absolute;
+        right: 20px;
+        top: 5px;
+        color: inherit;
+      }
+      a[data-icon=edit] {
+        right: 60px;
+      }
+      label[class*=col-md-],
+      p[class*=col-md-] {
+        margin-bottom: 0
+      }
+    </style>
+  </head>
+  <body>
+    <header class="container">
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Marionette Js</a>
+          </div>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#/add">Add</a></li>
+            </ul>
+          </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+      </nav>
+    </header>
+    <main class="container">
+      <div class="row form-group">
+        <div class="col-md-12">
+          <button type="button" id="add-contact" class="btn btn-primary hidden">Add contact</button>
+          <hr class=" hidden">
+          <div id="app-contact-list" class=""></div>
+        </div>
+      </div>
+    </main>
+
+    <footer id="app-footer"></footer>
+    
+    <script type="text/template" id="contact-collection">
+      <div class="row col-md-8"></div>
+    </script>
+
+    <script type="text/template" id="contact-template">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="row">
+            <label class="col-md-3 col-xs-3">Name</label>
+            <p class="col-md-9 col-xs-9"><%= name %></p>
+          </div>
+        </li>
+        <% if (typeof email !== 'undefined')  { %>
+          <li class="list-group-item">
+            <div class="row">
+              <label class="col-md-3 col-xs-3">Email</label>
+              <p class="col-md-9 col-xs-9"><%= email %></p>
+            </div>
+          </li>
+        <% } %>
+        <% if (typeof mobile !== 'undefined')  { %>
+          <li class="list-group-item">
+            <div class="row">
+              <label class="col-md-3 col-xs-3">Mobile</label>
+              <p class="col-md-9 col-xs-9"><%= mobile %></p>
+            </div>
+          </li>
+        <% } %>
+        <% if (typeof address !== 'undefined')  { %>
+          <li class="list-group-item">
+            <div class="row">
+              <label class="col-md-3 col-xs-3">Address</label>
+              <p class="col-md-9 col-xs-9"><%= address %></p>
+            </div>
+          </li>
+        <% } %>
+        <% if (typeof pin !== 'undefined')  { %>
+          <li class="list-group-item">
+            <div class="row">
+              <label class="col-md-3 col-xs-3">Pin</label>
+              <p class="col-md-9 col-xs-9"><%= pin %></p>
+            </div>
+          </li>
+        <% } %>
+      </ul>
+      <a href="#" id="remove-contact" data-icon="delete">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <i class="fa fa-trash fa-stack-1x fa-inverse"></i>
+        </span>
+      </a>
+      <a href="#/edit/<%= _id %>" id="edit-contact" data-icon="edit">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+        </span>
+      </a>
+    </script>
+
+    <script type="text/template" id="contact-form-template">
+      <form class="col-md-4" name="contact-form">
+        <div class="row form-group">
+          <label for="contactName" class="col-md-6 col-xs-6">Enter Name</label>
+          <div class="col-md-6 col-xs-6">
+            <input type="text" id="contactName" class="form-control" value="<%= name %>">
+          </div>
+        </div>
+        <div class="row form-group">
+          <label for="contactEmail" class="col-md-6 col-xs-6">Enter Email</label>
+          <div class="col-md-6 col-xs-6">
+            <input type="text" id="contactEmail" class="form-control" value="<%= email %>">
+          </div>
+        </div>
+        <div class="row form-group">
+          <label for="contactMobile" class="col-md-6 col-xs-6">Enter Mobile</label>
+          <div class="col-md-6 col-xs-6">
+            <input type="text" id="contactMobile" class="form-control" value="<%= mobile %>">
+          </div>
+        </div>
+        <div class="row form-group">
+          <label for="contactAddress" class="col-md-6 col-xs-6">Enter Address</label>
+          <div class="col-md-6 col-xs-6">
+            <input type="text" id="contactAddress" class="form-control" value="<%= address %>">
+          </div>
+        </div>
+        <div class="row form-group">
+          <label for="contactPin" class="col-md-6 col-xs-6">Enter Pin</label>
+          <div class="col-md-6 col-xs-6">
+            <input type="text" id="contactPin" class="form-control" value="<%= pin %>">
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-12 col-xs-12">
+            <% if (!edit) { %>
+              <button type="button" id="submitContact" class="btn btn-primary btn-block">Submit</button>  
+            <% } else { %>
+              <button type="button" id="updateContact" class="btn btn-primary btn-block">Update</button>
+            <% } %>
+          </div>
+        </div>
+      </form>
+    </script>
+
+    <script src="js/libs/jquery.js"></script>
+    <script src="js/libs/bootstrap.min.js"></script>
+    <script src="js/libs/underscore.js"></script>
+    <script src="js/libs/backbone.js"></script>
+    <script src="js/libs/backbone-marionette.js"></script>
+    
+
+    <!-- Contact Application setup -->
+    <script src="js/init.js"></script>
+
+    <!-- Contact collections -->
+    <script src="js/collections/contact-collection.js"></script>
+
+    <!-- Contact models -->
+    <script src="js/models/contact-edit-delete.js"></script>
+    <script src="js/models/contact-delete.js"></script>
+    <script src="js/models/contact-model.js"></script>
+    
+
+    <!-- Contact views -->
+    <script src="js/views/contact-itemview.js"></script>
+    <script src="js/views/contact-collectionview.js"></script>
+    <script src="js/views/contact-form-itemview.js"></script>
+
+    <!-- Contact controllers -->
+    <script src="js/controllers/contact-controller.js"></script>
+    
+    
+    <!-- Contact router setup -->
+    <script src="js/routers/contact-router.js"></script>
+
+    <!-- Contact Application setup -->
+    <script src="js/main.js"></script>
+
+
+  </body>
+</html>
